@@ -1,5 +1,6 @@
-# Longhorn 1.11.3 – repo customizations carried over from longhorn/values.yaml (1.10.1)
+# Longhorn overrides – derived from longhorn/values.yaml (1.10.1), valid for 1.11.3 / 1.12.2
 # Deliberately contains ONLY overrides; chart defaults supply everything else.
+# No image.* entries: those must always come from the chart being deployed.
 csi:
   kubeletRootDir: /var/snap/microk8s/common/var/lib/kubelet
 defaultSettings:
@@ -10,3 +11,6 @@ service:
     loadBalancerIP: 192.168.50.12
 networkPolicies:
   enabled: false
+  # 1.12.1+ renders internal NetworkPolicies from restrictInternalTraffic (default true),
+  # independent of `enabled`. Disabled here: breaks Prometheus scraping + CSI attach/detach.
+  restrictInternalTraffic: false
